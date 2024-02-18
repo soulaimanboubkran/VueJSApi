@@ -1,15 +1,33 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+    <h1>Posts</h1>
+    <ul>
+      <li v-for="post in posts" :key="post.id">{{ post.title }}</li>
+    </ul>
   </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      posts: []
+    };
+  },
+  mounted() {
+    this.fetchPosts();
+  },
+  methods: {
+    async fetchPosts() {
+      try {
+        const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
+        this.posts = response.data;
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    }
   }
-}
-</style>
+};
+</script>
